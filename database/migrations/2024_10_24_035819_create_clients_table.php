@@ -11,8 +11,9 @@ class CreateClientsTable extends Migration
         Schema::create('clients', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->string('address', 255)->nullable();
-            $table->string('phone', 20)->nullable();
+            $table->string('address')->nullable();
+            $table->string('phone')->nullable();
+            $table->enum('role', ['cliente'])->default('cliente'); // Añadido
             $table->timestamps();
         });
     }
