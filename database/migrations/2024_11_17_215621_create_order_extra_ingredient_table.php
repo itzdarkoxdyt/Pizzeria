@@ -9,13 +9,16 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
-    {
-        Schema::create('order_extra_ingredient', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-        });
-    }
+    public function up()
+{
+    Schema::create('order_extra_ingredient', function (Blueprint $table) {
+        $table->id();
+        $table->foreignId('order_id')->constrained('orders')->onDelete('cascade');
+        $table->foreignId('extra_ingredient_id')->constrained('extra_ingredients')->onDelete('cascade');
+        $table->integer('quantity');
+        $table->timestamps();
+    });
+}
 
     /**
      * Reverse the migrations.
