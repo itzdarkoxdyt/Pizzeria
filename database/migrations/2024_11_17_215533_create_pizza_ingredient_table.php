@@ -9,13 +9,15 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
-    {
-        Schema::create('pizza_ingredient', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-        });
-    }
+    public function up()
+{
+    Schema::create('pizza_ingredient', function (Blueprint $table) {
+        $table->id();
+        $table->foreignId('pizza_id')->constrained('pizzas')->onDelete('cascade');
+        $table->foreignId('ingredient_id')->constrained('ingredients')->onDelete('cascade');
+        $table->timestamps();
+    });
+}
 
     /**
      * Reverse the migrations.
