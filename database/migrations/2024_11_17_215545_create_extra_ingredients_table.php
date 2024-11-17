@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('ordenes', function (Blueprint $table) {
+        Schema::create('extra_ingredients', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
         });
@@ -22,6 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('ordenes');
+        Schema::dropIfExists('extra_ingredients');
     }
 };
