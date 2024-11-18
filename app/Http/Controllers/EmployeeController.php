@@ -2,63 +2,67 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Employee;
 use Illuminate\Http\Request;
 
 class EmployeeController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $employees = Employee::all();
+        return view('employees.index', compact('employees'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        return view('employees.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'position' => 'required|in:cajero,administrador,cocinero,mensajero',
+            'identification_number' => 'required|string|max:20',
+            'salary' => 'required|numeric|min:0',
+            'hire_date' => 'required|date',
+        ]);
+
+        Employee::create($request->all());
+        return redirect()->route('employees.index')->with('success', 'Empleado creado exitosamente');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function show($id)
     {
-        //
+        $employee = Employee::findOrFail($id);
+        return view('employees.show', compact('employee'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function edit($id)
     {
-        //
+        $employee = Employee::findOrFail($id);
+        return view('employees.edit', compact('employee'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'position' => 'required|in:cajero,administrador,cocinero,mensajero',
+            'identification_number' => 'required|string|max:20',
+            'salary' => 'required|numeric|min:0',
+            'hire_date' => 'required|date',
+        ]);
+
+        $employee = Employee::findOrFail($id);
+        $employee->update($request->all());
+
+        return redirect()->route('employees.index')->with('success', 'Empleado actualizado exitosamente');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        $employee = Employee::findOrFail($id);
+        $employee->delete();
+        return redirect()->route('employees.index')->with('success', 'Empleado eliminado exitosamente');
     }
 }

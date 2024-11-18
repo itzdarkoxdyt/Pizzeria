@@ -2,63 +2,63 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\PizzaSize;
 use Illuminate\Http\Request;
 
 class PizzaSizeController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $pizzaSizes = PizzaSize::all();
+        return view('pizza-sizes.index', compact('pizzaSizes'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        return view('pizza-sizes.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'pizza_id' => 'required|exists:pizzas,id',
+            'size' => 'required|in:pequeña,mediana,grande',
+            'price' => 'required|numeric|min:0',
+        ]);
+
+        PizzaSize::create($request->all());
+        return redirect()->route('pizza-sizes.index')->with('success', 'Tamaño de pizza creado exitosamente');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function show($id)
     {
-        //
+        $pizzaSize = PizzaSize::findOrFail($id);
+        return view('pizza-sizes.show', compact('pizzaSize'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function edit($id)
     {
-        //
+        $pizzaSize = PizzaSize::findOrFail($id);
+        return view('pizza-sizes.edit', compact('pizzaSize'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'size' => 'required|in:pequeña,mediana,grande',
+            'price' => 'required|numeric|min:0',
+        ]);
+
+        $pizzaSize = PizzaSize::findOrFail($id);
+        $pizzaSize->update($request->all());
+
+        return redirect()->route('pizza-sizes.index')->with('success', 'Tamaño de pizza actualizado exitosamente');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        $pizzaSize = PizzaSize::findOrFail($id);
+        $pizzaSize->delete();
+        return redirect()->route('pizza-sizes.index')->with('success', 'Tamaño de pizza eliminado exitosamente');
     }
 }

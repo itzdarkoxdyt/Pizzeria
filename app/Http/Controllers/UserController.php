@@ -2,41 +2,84 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Pizza;
-use App\Models\Order;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-    // Ver todas las pizzas para el usuario
-    public function showPizzas()
+    // Lista todos los usuarios
+    public function index()
     {
-        $pizzas = Pizza::all();
-        return view('user.pizzas.index', compact('pizzas'));
+        $users = User::all();
+        return view('users.index', compact('users'));
     }
 
-    // Hacer un pedido
-    public function orderPizza(Request $request)
+    // Muestra el formulario de creación de usuario
+    public function create()
+    {
+        return view('users.create');
+    }
+
+    // Almacena un nuevo usuario
+    public function store(Request $request)
     {
         $request->validate([
-            'pizza_id' => 'required|exists:pizzas,id',
-            'quantity' => 'required|integer|min:1',
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|min:8',
+            'role' => 'required|in:cliente,empleado',
         ]);
 
-        Order::create([
-            'user_id' => auth()->user()->id,
-            'pizza_id' => $request->pizza_id,
-            'quantity' => $request->quantity,
-            'status' => 'en proceso',  // Estado inicial
+        User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'role' => $request->role,
         ]);
 
-        return redirect()->route('user.orders.index')->with('success', 'Pedido realizado');
+        return redirect()->route('users.index')->with('success', 'Usuario creado exitosamente');
     }
 
-    // Ver el estado del pedido
-    public function showOrderStatus()
+    // Muestra los detalles de un usuario específico
+    public function show($id)
     {
-        $orders = Order::where('user_id', auth()->user()->id)->get();
-        return view('user.orders.index', compact('orders'));
+        $user = User::findOrFail($id);
+        return view('users.show', compact('user'));
+    }
+
+    // Muestra el formulario de edición de usuario
+    public function edit($id)
+    {
+        $user = User::findOrFail($id);
+        return view('users.edit', compact('user'));
+    }
+
+    // Actualiza un usuario existente
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . $id,
+            'role' => 'required|in:cliente,empleado',
+        ]);
+
+        $user = User::findOrFail($id);
+        $user->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'role' => $request->role,
+            'password' => $request->password ? Hash::make($request->password) : $user->password,
+        ]);
+
+        return redirect()->route('users.index')->with('success', 'Usuario actualizado exitosamente');
+    }
+
+    // Elimina un usuario
+    public function destroy($id)
+    {
+        $user = User::findOrFail($id);
+        $user->delete();
+        return redirect()->route('users.index')->with('success', 'Usuario eliminado exitosamente');
     }
 }
