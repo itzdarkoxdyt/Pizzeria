@@ -12,10 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('order_pizza', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+            $table->id(); // Primary Key, Auto Increment
+            $table->foreignId('order_id')->constrained('orders')->onDelete('cascade'); // Foreign Key, referencia a orders.id
+            $table->foreignId('pizza_size_id')->constrained('pizza_size')->onDelete('cascade'); // Foreign Key, referencia a pizza_size.id
+            $table->integer('quantity'); // Cantidad de pizzas
+    
+            $table->timestamps(); // Crea automáticamente created_at y updated_at
         });
     }
+    
 
     /**
      * Reverse the migrations.
