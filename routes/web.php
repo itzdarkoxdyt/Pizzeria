@@ -68,6 +68,22 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('pizza-raw-materials', PizzaRawMaterialController::class);
 });
 
+// Rutas para clientes
+Route::middleware(['auth', 'role:cliente'])->group(function () {
+    Route::get('/home', [HomeController::class, 'index'])->name('home');  // Vista principal para clientes
+    Route::get('/mi-cuenta', [ClientController::class, 'profile'])->name('mi-cuenta'); // Perfil del cliente
+    Route::get('/mis-pedidos', [ClientController::class, 'orders'])->name('mis-pedidos'); // Historial de pedidos
+    Route::get('/realizar-pedido', [OrderController::class, 'create'])->name('realizar-pedido'); // Crear un nuevo pedido
+});
+
+// Rutas para empleados
+Route::middleware(['auth', 'role:empleado'])->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard'); // Vista principal para empleados
+    Route::get('/pedidos', [OrderController::class, 'manage'])->name('pedidos'); // Gestionar pedidos
+    Route::get('/gestionar-pizzas', [PizzaController::class, 'index'])->name('gestionar-pizzas'); // Gestionar pizzas
+    Route::get('/gestionar-inventario', [InventoryController::class, 'index'])->name('gestionar-inventario'); // Gestionar inventario
+});
+
 
 
 require __DIR__.'/auth.php';
