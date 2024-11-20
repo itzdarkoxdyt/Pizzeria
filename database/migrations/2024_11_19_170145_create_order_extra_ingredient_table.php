@@ -11,20 +11,21 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('extra_ingredients', function (Blueprint $table) {
+        Schema::create('order_extra_ingredient', function (Blueprint $table) {
             $table->id(); // Primary Key, Auto Increment
-            $table->string('name', 255); // Nombre del ingrediente extra
-            $table->decimal('price', 8, 2); // Precio del ingrediente extra con dos decimales
+            $table->foreignId('order_id')->constrained('orders')->onDelete('cascade'); // Foreign Key, referencia a orders.id
+            $table->foreignId('extra_ingredient_id')->constrained('extra_ingredients')->onDelete('cascade'); // Foreign Key, referencia a extra_ingredients.id
+            $table->integer('quantity'); // Cantidad de ingredientes extra
+    
             $table->timestamps(); // Crea automáticamente created_at y updated_at
         });
     }
-    
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('extra_ingredients');
+        Schema::dropIfExists('order_extra_ingredient');
     }
 };

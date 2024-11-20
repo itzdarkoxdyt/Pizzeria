@@ -9,6 +9,8 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+
 Route::resource('clients', App\Http\Controllers\ClientController::class);
 Route::resource('employees', App\Http\Controllers\EmployeeController::class);
 Route::resource('extra_ingredients', App\Http\Controllers\ExtraIngredientController::class);
@@ -23,17 +25,4 @@ Route::resource('orders', App\Http\Controllers\OrderController::class);
 Route::resource('suppliers', App\Http\Controllers\SupplierController::class);
 Route::resource('branches', App\Http\Controllers\BranchController::class);
 Route::resource('raw_materials', App\Http\Controllers\RawMaterialController::class);
-Route::resource('pizza_ingredients', App\Http\Controllers\PizzaIngredientController::class);
-
-
-
-
-
-
-
-
-
-
-
-
-
+Route::resource('pizza_ingredient', App\Http\Controllers\PizzaIngredientController::class);

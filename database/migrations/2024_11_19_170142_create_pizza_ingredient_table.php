@@ -11,21 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pizza_size', function (Blueprint $table) {
+        Schema::create('pizza_ingredient', function (Blueprint $table) {
             $table->id(); // Primary Key, Auto Increment
             $table->foreignId('pizza_id')->constrained('pizzas')->onDelete('cascade'); // Foreign Key, referencia a pizzas.id
-            $table->enum('size', ['pequeña', 'mediana', 'grande']); // Tamaño de la pizza
-            $table->decimal('price', 8, 2); // Precio con dos decimales
+            $table->foreignId('ingredient_id')->constrained('ingredients')->onDelete('cascade'); // Foreign Key, referencia a ingredients.id
             $table->timestamps(); // Crea automáticamente created_at y updated_at
         });
     }
-    
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('pizza_size');
+        Schema::dropIfExists('pizza_ingredient');
     }
 };

@@ -49,6 +49,66 @@
                                 </li>
                             @endif
                         @else
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('clients.index') }}" >clients</a>
+                           </li>
+                           
+                           <li class="nav-item">
+                            <a class="nav-link" href="{{ route('ingredients.index') }}" >ingredients</a>
+                           </li>
+
+                           <li class="nav-item">
+                            <a class="nav-link" href="{{ route('pizza_ingredient.index') }}" >pizza_ingredient</a>
+                           </li>
+
+                           <li class="nav-item">
+                            <a class="nav-link" href="{{ route('employees.index') }}" >employees</a>
+                           </li>
+
+                           <li class="nav-item">
+                            <a class="nav-link" href="{{ route('pizzas.index') }}" >pizzas</a>
+                           </li>
+
+                           <li class="nav-item">
+                            <a class="nav-link" href="{{ route('extra_ingredients.index') }}" >extra_ingredients</a>
+                           </li>
+
+                           <li class="nav-item">
+                            <a class="nav-link" href="{{ route('branches.index') }}" >branches</a>
+                           </li>
+
+                           <li class="nav-item">
+                            <a class="nav-link" href="{{ route('orders.index') }}" >orders</a>
+                           </li>
+
+                           <li class="nav-item">
+                            <a class="nav-link" href="{{ route('order_pizza.index') }}" >order_pizza</a>
+                           </li>
+
+                           <li class="nav-item">
+                            <a class="nav-link" href="{{ route('order_extra_ingredient.index') }}" >order_extra_ingredient</a>
+                           </li>
+
+                           <li class="nav-item">
+                            <a class="nav-link" href="{{ route('suppliers.index') }}" >suppliers/a>
+                           </li>
+                           
+                           <li class="nav-item">
+                            <a class="nav-link" href="{{ route('raw_materials.index') }}" >raw_materials/a>
+                           </li>
+
+                            
+                           <li class="nav-item">
+                            <a class="nav-link" href="{{ route('pizza_raw_material.index') }}" >pizza_raw_material/a>
+                           </li>
+
+                           <li class="nav-item">
+                            <a class="nav-link" href="{{ route('pizza_size.index') }}" >pizza_size</a>
+                           </li>
+
+                           <li class="nav-item">
+                            <a class="nav-link" href="{{ route('purchases.index') }}" >purchases</a>
+                           </li>
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }}

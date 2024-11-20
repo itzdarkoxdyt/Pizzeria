@@ -21,7 +21,6 @@ return new class extends Migration
             $table->timestamps(); // Crea automáticamente created_at y updated_at
         });
     }
-    
 
     /**
      * Reverse the migrations.
