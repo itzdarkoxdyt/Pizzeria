@@ -9,43 +9,55 @@ use Illuminate\Http\Request;
 
 class PizzaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $pizzas = Pizza::all();
+        return view('pizzas.index', compact('pizzas'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    public function create()
+    {
+        return view('pizzas.create');
+    }
+
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+
+        Pizza::create($request->all());
+        return redirect()->route('pizzas.index')->with('success', 'Pizza creada exitosamente');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function show($id)
     {
-        //
+        $pizza = Pizza::findOrFail($id);
+        return view('pizzas.show', compact('pizza'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function edit($id)
     {
-        //
+        $pizza = Pizza::findOrFail($id);
+        return view('pizzas.edit', compact('pizza'));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+
+        $pizza = Pizza::findOrFail($id);
+        $pizza->update($request->all());
+
+        return redirect()->route('pizzas.index')->with('success', 'Pizza actualizada exitosamente');
+    }
+
+    public function destroy($id)
+    {
+        $pizza = Pizza::findOrFail($id);
+        $pizza->delete();
+        return redirect()->route('pizzas.index')->with('success', 'Pizza eliminada exitosamente');
     }
 }
