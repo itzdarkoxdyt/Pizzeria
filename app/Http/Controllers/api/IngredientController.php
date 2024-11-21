@@ -14,38 +14,53 @@ class IngredientController extends Controller
      */
     public function index()
     {
-        //
+        $ingredients = Ingredient::all();
+        return view('ingredients.index', compact('ingredients'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    public function create()
+    {
+        return view('ingredients.create');
+    }
+
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+
+        Ingredient::create($request->all());
+        return redirect()->route('ingredients.index')->with('success', 'Ingrediente creado exitosamente');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function show($id)
     {
-        //
+        $ingredient = Ingredient::findOrFail($id);
+        return view('ingredients.show', compact('ingredient'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function edit($id)
     {
-        //
+        $ingredient = Ingredient::findOrFail($id);
+        return view('ingredients.edit', compact('ingredient'));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+
+        $ingredient = Ingredient::findOrFail($id);
+        $ingredient->update($request->all());
+
+        return redirect()->route('ingredients.index')->with('success', 'Ingrediente actualizado exitosamente');
+    }
+
+    public function destroy($id)
+    {
+        $ingredient = Ingredient::findOrFail($id);
+        $ingredient->delete();
+        return redirect()->route('ingredients.index')->with('success', 'Ingrediente eliminado exitosamente');
     }
 }
